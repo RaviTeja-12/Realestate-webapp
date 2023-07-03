@@ -1,0 +1,97 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'jyore/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
+<link rel="stylesheet" href="{% static 'jyore/fonts/font-awesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'jyore/fonts/simple-line-icons.min.css' %}">
+<link rel="stylesheet" href="{% static 'jyore/css/animate.min.css' %}">
+<nav class="navbar navbar-light navbar-expand-md sticky-top "
+        style="background: rgba(255, 249, 249, 0.48);border-bottom-width: 1px;border-bottom-style: solid;border-radius: 0px;box-shadow: 0px 0px 4px rgb(0, 0, 0);backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home'%}">JYO's RealEstate</a><button data-bs-toggle="collapse"
+                class="navbar-toggler" data-bs-target="#navcol-1"></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'marketplace'%}">MarketPlace</a></li>
+                </ul>
+                <ul class="navbar-nav" style="float:right">
+                    <li class="nav-item"><a class="nav-link" href="#">sell</a></li>
+                </ul>
+                <a class="btn btn-primary ms-auto" role="button" href="{%url 'logout'%}"
+                    style="margin-right: 13px;">Logout</a>
+            </div>
+        </div>
+    </nav>
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h2>Create Profile</h2>
+      {%if messages%}
+                                <ul class="messages">
+                                    {%for message in messages%}
+                                    <li {%if message.tags %}class="{{message.tags}}"{% endif %}>{{message}}</li>
+                                    {%endfor%}
+                                </ul>
+                                {%endif%}
+      <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Landlord Name</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="mobile" class="form-label">Mobile</label>
+          <input type="text" class="form-control" id="mobile" name="mobile" required>
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">Address</label>
+          <input type="text" class="form-control" id="address" name="address" required>
+        </div>
+        <div class="mb-3">
+          <label for="city" class="form-label">City</label>
+          <input type="text" class="form-control" id="city" name="city" required>
+        </div>
+        <div class="mb-3">
+          <label for="state" class="form-label">State</label>
+          <input type="text" class="form-control" id="state" name="state" required>
+        </div>
+        <div class="mb-3">
+          <label for="dimensions" class="form-label">Dimensions</label>
+          <input type="text" class="form-control" id="dimensions" name="dimensions" required>
+        </div>
+        <div class="mb-3">
+          <label for="mainimage" class="form-label">Main Image</label>
+          <input type="file" class="form-control" id="mainimage" name="mainimage" required>
+        </div>
+        <div class="mb-3">
+          <label for="subimage1" class="form-label">Sub Image 1</label>
+          <input type="file" class="form-control" id="subimage1" name="subimage1" required>
+        </div>
+        <div class="mb-3">
+          <label for="subimage2" class="form-label">Sub Image 2</label>
+          <input type="file" class="form-control" id="subimage2" name="subimage2" required>
+        </div>
+        <div class="mb-3">
+          <label for="subimage3" class="form-label">Sub Image 3</label>
+          <input type="file" class="form-control" id="subimage3" name="subimage3" required>
+        </div>
+        <div class="mb-3">
+          <label for="type_of_property" class="form-label">Type of Property</label>
+          <select class="form-select" id="type_of_property" name="type_of_property" required>
+            <option value="">Select</option>
+            <option value="option1">land</option>
+            <option value="option2">house</option>
+            <option value="option3">Comercial space</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Profile</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
