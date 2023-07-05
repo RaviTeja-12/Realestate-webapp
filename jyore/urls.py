@@ -10,5 +10,5 @@ urlpatterns = [
     path('marketplace',marketplace,name='marketplace'),
     path('sell',sell,name='sell'),
     path('profile/', profile_view, name='profile'),
-    path("<int:id>/delete_v/",delete_v,name="delete_v"),
+    path("delete/<int:id>/",delete_v,name="delete_v"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -15,6 +15,7 @@ User = get_user_model()
 class Profile(models.Model): 
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=None)  # New field for user
     Landlord_Name = models.CharField(max_length=20)
+    price = models.IntegerField(blank=True, null=True, default=0)
     email = models.EmailField()
     mobile = models.IntegerField(blank=True, null=True)
     address = models.CharField(max_length=50)
@@ -33,4 +34,4 @@ class Profile(models.Model):
     type_of_property = models.CharField(max_length=20, choices=CHOICES, default="house")
 
     def __str__(self):
-        return self.Landlord_Name 
+        return self.Landlord_Name

@@ -15,15 +15,16 @@ def index(request):
 
 
 def profile_view(request):
-    username = request.user.username
+    username = request.user
     history = Profile.objects.filter(user = username)  # Replace with your actual history data
     context = {'history': history}
     return render(request, 'jyore/profile.html', context)
 
-def delete_v(request,username):
+def delete_v(request,id):
+    print(id)
     user = Profile.objects.get(pk=id)
     user.delete()
-    return redirect(reverse("profile"))
+    return redirect('profile')
 
 def register(request):
     form = SignupForm()
@@ -79,8 +80,32 @@ def logout_view(request):
     return redirect('login')
 
 def marketplace(request): 
-    profile = Profile.objects.all()
-    return render(request,'jyore/MarketPlace.html',{"profile":profile})
+    cities = Profile.objects.values_list('city', flat=True).distinct()
+    profiles = Profile.objects.all()
+    
+    # Apply filters if provided in the request
+    city_filter = request.GET.get('city')
+    type_filter = request.GET.get('type')
+    dimensions_filter = request.GET.get('dimensions')
+    price_filter = request.GET.get('price')
+    
+    if city_filter:
+        profiles = profiles.filter(city=city_filter)
+    if type_filter:
+        profiles = profiles.filter(type=type_filter)
+    if dimensions_filter:
+        profiles = profiles.filter(dimensions__lte=dimensions_filter)
+    if price_filter:
+        profiles = profiles.filter(price__lte=price_filter)  # Filter profiles with price less than or equal to the specified price
+    
+    context = {
+        'cities': cities,
+        'profile': profiles,
+    }
+    
+    return render(request, 'jyore/MarketPlace.html', context)
+
+
 
 
 
@@ -92,6 +117,7 @@ def sell(request):
     if request.method == 'POST':
         user = request.user  # Get the User instance
         Landlord_Name = request.POST['username']
+        price = request.POST['price']
         email = request.POST['email']
         mobile = request.POST['mobile']
         address = request.POST['address']
@@ -108,6 +134,7 @@ def sell(request):
             profile = Profile(
                 user=user,  # Assign the User instance to the user field
                 Landlord_Name=Landlord_Name,
+                price=price,
                 email=email,
                 mobile=mobile,
                 address=address,
