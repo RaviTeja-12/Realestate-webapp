@@ -11,5 +11,5 @@ urlpatterns = [
     path('sell/',sell,name='sell'),
     path('profile/', profile_view, name='profile'),
     path("delete/<int:id>/",delete_v,name="delete_v"),
-    path('verify-otp/', verify_otp, name='verify_otp'),
+    path('verify-otp/<str:username>', verify_otp, name='verify_otp'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

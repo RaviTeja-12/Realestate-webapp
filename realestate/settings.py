@@ -136,7 +136,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
         # 'CONFIG': {
-        #     'hosts': [('127.0.0.1', 6379)],
+        #     'hosts': [('127.0.0.1', 8000)],
         # }
     }
 }
@@ -149,7 +149,7 @@ CHANNEL_LAYERS = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST =  'smtp.gmail.com'
 EMAIL_PORT = 587  # Check the documentation of your email provider for the correct port
-EMAIL_HOST_USER = 'jyothsnabnadi2@gmail.com'  # Your email address
+EMAIL_HOST_USER = 'jyothsnabandi2@gmail.com'  # Your email address
 EMAIL_HOST_PASSWORD = 'hmklkmtozyzcalyx'  # Your email password or app-specific password
 EMAIL_USE_TLS = True  # Use TLS encryption for secure connection
 

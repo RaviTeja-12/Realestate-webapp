@@ -2,7 +2,7 @@ import json
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
-
+from channels.exceptions import StopConsumer
 from chat.models import Thread, ChatMessage
 
 User = get_user_model()
@@ -74,6 +74,7 @@ class ChatConsumer(AsyncConsumer):
 
     async def websocket_disconnect(self, event):
         print('disconnect', event)
+        raise StopConsumer()
 
     async def chat_message(self, event):
         print('chat_message', event)

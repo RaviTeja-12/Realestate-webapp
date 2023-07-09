@@ -14,7 +14,7 @@
    
     <div class="container" id="main-wrapper">
         <nav class="navbar navbar-light navbar-expand-md" style="margin-bottom: 25px;border-bottom-width: 1px;border-bottom-style: solid;">
-            <div class="container-fluid"><a class="navbar-brand" href="{% url 'home'%}">JYO's RealEstate</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container-fluid"><a class="navbar-brand" href="{% url 'home'%}">RealEstate For U</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="navbar-nav">
                         <li class="nav-item"><a class="nav-link active" href="#">MarketPlace</a></li>
@@ -55,7 +55,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 d-none d-lg-inline-block">
-                                <div class="account-block rounded-right" style="background: url(&quot;{% static 'jyore/images/login.jpg' %}&quot;) center / cover no-repeat;">
+                                <div class="account-block rounded-right" style="background: url(&quot;{% static 'jyore/images/login.jpg' %}&quot;) center / cover no-repeat ;">
                                     <div class="overlay rounded-right"></div>
                                     <div class="account-testimonial">
                                         <h4 class="text-white mb-4"></h4>
@@ -70,15 +70,9 @@
             </div>
         </div>
     </div>
-    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
-    <!-- <div align="center">
-        {% for i in messages%}
-        <script>
-          alert('{{i}}')
-        </script>
-        {% endfor %}
-    </div> -->
-      <!-- <script>
+    <script src="{% static 'jyore/bootstrap/js/bootstrap.min.js' %}"></script>
+    
+      <script>
         function checkPasswordStrength(password) {
   // Define a regular expression pattern to check password strength
   var pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -104,7 +98,7 @@ document.getElementById("myForm").addEventListener("submit", function(event) {
   }
 });
 
-      </script> -->
+      </script>
 </body>
 
 </html>

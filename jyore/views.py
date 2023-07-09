@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User,auth
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from .models import Users,Profile
+from .models import Users,Profile,Otp
 from .forms import SignupForm,LoginForm
 from django.urls import reverse
 
@@ -27,7 +27,6 @@ def delete_v(request,id):
     return redirect('profile')
 
 from django.contrib.auth.models import User
-from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.mail import send_mail
@@ -37,56 +36,43 @@ from django.utils.crypto import get_random_string
 
 def register(request):
     form = SignupForm()
-    
+     # Create an empty list to store users
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
             username = request.POST["Email"]
             password = request.POST["password"]
             first_name = request.POST["First_Name"]
-            
             if Users.objects.filter(Email=username).exists():
                 messages.info(request, 'Email already exists!')
                 return redirect('register')
             else:
                 user = User.objects.create_user(username=username, password=password, first_name=first_name)
-                user.is_active = False  # Set user as inactive until OTP verification
                 user.save()
-                otp = get_random_string(length=6, allowed_chars='0123456789')
-
-                # Save OTP in user profile or associated OTP model
-                Users.otp = otp
-                Users.save()
                 form.save()
-                # Send OTP via email
-                subject = 'OTP Verification'
-                message = f'Your OTP for registration: {otp}'
-                from_email = settings.EMAIL_HOST_USER
-                recipient_list = [username]
-                send_mail(subject, message, from_email, recipient_list)
-
-                # Redirect to OTP verification page
-                return redirect('verify_otp')
+                
+                 # Append the user to the list
+                # Assuming you have the otp and user objects available
+                otp = generate_otp()
+                otp_instance = Otp.objects.create(otp=otp, email=username)
+                send_otp(username, otp_instance.otp)
+                return redirect('verify_otp', username=username)
         else:
-            return HttpResponse("Error")
-    return render(request, 'jyore/register.html', {'form': form})
+            return HttpResponse("not valid")
+    
+    context = {'form': form}  # Pass the user_list to the context
+    return render(request, 'jyore/register.html', context)
 
-def verify_otp(request):
+def verify_otp(request, username):
     if request.method == 'POST':
-        otp = request.POST.get('otp')
-        user = request.user
-
-        # Compare the entered OTP with the saved OTP
-        if otp == User.otp:
-            # Mark user as verified and activate the account
-            user.is_active = True
-            user.save()
-
-            messages.success(request, 'OTP verification successful. Your account is now active.')
+        otp = request.POST['otp']
+        if Otp.objects.filter(otp=otp).exists() and Otp.objects.filter(email=username).exists():
             return redirect('home')
         else:
-            messages.error(request, 'Invalid OTP. Please enter the correct OTP.')
-
+            messages.info(request, 'Invalid OTP!')
+            return redirect('verify_otp')
+    
+    # Send OTP via email
     return render(request, 'jyore/otp-verification.html')
 
 def login_page(request):
@@ -205,3 +191,20 @@ def sell(request):
     
     return render(request, 'jyore/sell.html')
 
+import string
+import random
+from django.conf import settings
+from django.core.mail import send_mail
+
+def generate_otp():
+    digits = string.digits
+    otp = ''.join(random.choice(digits) for _ in range(6))
+    return otp
+
+
+def send_otp(email, otp):
+    subject = 'OTP Verification'
+    message = f'Your OTP for registration: {otp}'
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+    send_mail(subject, message, from_email, recipient_list)

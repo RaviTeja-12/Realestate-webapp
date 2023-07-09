@@ -17,7 +17,7 @@ def messages_page(request):
     return render(request, 'messages.html', context)
 
 from django.shortcuts import redirect
-from .models import Thread
+
 from django.contrib import messages
 
 @login_required

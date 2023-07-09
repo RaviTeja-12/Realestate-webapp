@@ -8,9 +8,18 @@ class Users(models.Model):
     First_Name = models.CharField(max_length=100)
     Email = models.EmailField( max_length=254)
     password = models.CharField(max_length=20,default='pass')
-    otp = models.CharField(max_length=6, blank=True, null=True)  # OTP field
     def __str__(self):
         return self.First_Name
+
+class Otp(models.Model):
+    otp = models.CharField(max_length=6)
+    email=models.EmailField( max_length=254,default='email',null=True, blank=True)
+    def __str__(self):
+        return self.otp
+    def save_otp(self, otp):
+        self.otp = otp
+        self.save()
+
 
 User = get_user_model()
 class Profile(models.Model): 
