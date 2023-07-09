@@ -1,9 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Profile</title>
+    <title>RealEstate seller Profile</title>
     <!-- Add Bootstrap CSS CDN or include the Bootstrap CSS file -->
-    <link rel="stylesheet" href="{% static 'jyore/bootstrap/css/bootstrap.min.css' %}"></head>
+    <link rel="stylesheet" href="{% static 'jyore/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'jyore/fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'jyore/fonts/simple-line-icons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'jyore/css/animate.min.css' %}">
 <body>
     <nav class="navbar navbar-light navbar-expand-md sticky-top"
 style="background: rgba(255, 249, 249, 0.48);border-bottom-width: 1px;border-bottom-style: solid;border-radius: 0px;box-shadow: 0px 0px 4px rgb(0, 0, 0);backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);">
@@ -34,20 +39,20 @@ style="background: rgba(255, 249, 249, 0.48);border-bottom-width: 1px;border-bot
 </nav>
 
     <div class="container">
-        <h1>Welcome, {{ history.0.user.first_name }}</h1>
+        <h1 class="display-3">Hi, {{ username.first_name}}</h1>
 
         <div class="card">
             <div class="card-header">
                 <h2>Profile Information</h2>
             </div>
             <div class="card-body">
-                <p><strong>Email:</strong> {{ history.0.email }}</p>
+                <p><strong>Email:</strong> {{ username.username }}</p>
             </div>
         </div>
 
         <div class="card mt-4">
             <div class="card-header">
-                <h2>History</h2>
+                <h2>Property Listings</h2>
             </div>
             <div class="card-body">
                 <ul class="list-group">
@@ -70,6 +75,8 @@ style="background: rgba(255, 249, 249, 0.48);border-bottom-width: 1px;border-bot
                                     </div>
                                 </div>
                             </div>
+                            {% empty %}
+                            <p>Yet to post.</p>
                             {% endfor %}
                         </div>
                     </div>
@@ -79,6 +86,6 @@ style="background: rgba(255, 249, 249, 0.48);border-bottom-width: 1px;border-bot
     </div>
 
     <!-- Add Bootstrap JS CDN or include the Bootstrap JS file (if needed) -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'jyore/bootstrap/js/bootstrap.min.js' %}"></script>
 </body>
 </html>

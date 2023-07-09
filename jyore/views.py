@@ -17,7 +17,7 @@ def index(request):
 def profile_view(request):
     username = request.user
     history = Profile.objects.filter(user = username)  # Replace with your actual history data
-    context = {'history': history}
+    context = {'history': history, 'username': username}
     return render(request, 'jyore/profile.html', context)
 
 def delete_v(request,id):
@@ -26,31 +26,68 @@ def delete_v(request,id):
     user.delete()
     return redirect('profile')
 
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.conf import settings
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
+
+
+
 def register(request):
     form = SignupForm()
-     # Create an empty list to store users
+    
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
             username = request.POST["Email"]
             password = request.POST["password"]
             first_name = request.POST["First_Name"]
+            
             if Users.objects.filter(Email=username).exists():
                 messages.info(request, 'Email already exists!')
                 return redirect('register')
             else:
                 user = User.objects.create_user(username=username, password=password, first_name=first_name)
+                user.is_active = False  # Set user as inactive until OTP verification
                 user.save()
-                form.save()
-                
-                 # Append the user to the list
-                return redirect('login')
-        else:
-            return HttpResponse("not valid")
-    
-    context = {'form': form}  # Pass the user_list to the context
-    return render(request, 'jyore/register.html', context)
+                otp = get_random_string(length=6, allowed_chars='0123456789')
 
+                # Save OTP in user profile or associated OTP model
+                Users.otp = otp
+                Users.save()
+                form.save()
+                # Send OTP via email
+                subject = 'OTP Verification'
+                message = f'Your OTP for registration: {otp}'
+                from_email = settings.EMAIL_HOST_USER
+                recipient_list = [username]
+                send_mail(subject, message, from_email, recipient_list)
+
+                # Redirect to OTP verification page
+                return redirect('verify_otp')
+        else:
+            return HttpResponse("Error")
+    return render(request, 'jyore/register.html', {'form': form})
+
+def verify_otp(request):
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        user = request.user
+
+        # Compare the entered OTP with the saved OTP
+        if otp == User.otp:
+            # Mark user as verified and activate the account
+            user.is_active = True
+            user.save()
+
+            messages.success(request, 'OTP verification successful. Your account is now active.')
+            return redirect('home')
+        else:
+            messages.error(request, 'Invalid OTP. Please enter the correct OTP.')
+
+    return render(request, 'jyore/otp-verification.html')
 
 def login_page(request):
     form=LoginForm()
@@ -86,17 +123,25 @@ def marketplace(request):
     # Apply filters if provided in the request
     city_filter = request.GET.get('city')
     type_filter = request.GET.get('type')
-    dimensions_filter = request.GET.get('dimensions')
-    price_filter = request.GET.get('price')
+    dimensions_filter = request.GET.get('totalArea')
+    price_from = request.GET.get('price_from')
+    price_to = request.GET.get('price_to')
+    willing_to = request.GET.get('willing_to')
     
     if city_filter:
         profiles = profiles.filter(city=city_filter)
     if type_filter:
-        profiles = profiles.filter(type=type_filter)
+        profiles = profiles.filter(type_of_property=type_filter)
     if dimensions_filter:
         profiles = profiles.filter(dimensions__lte=dimensions_filter)
-    if price_filter:
-        profiles = profiles.filter(price__lte=price_filter)  # Filter profiles with price less than or equal to the specified price
+    if price_from:
+        profiles = profiles.filter(price__gte=price_from)
+
+    if price_to:
+        profiles = profiles.filter(price__lte=price_to)
+    
+    if willing_to:
+        profiles = profiles.filter(Willing_to=willing_to)
     
     context = {
         'cities': cities,
@@ -107,48 +152,50 @@ def marketplace(request):
 
 
 
-
-
-
-
-
-
 def sell(request):
     if request.method == 'POST':
-        user = request.user  # Get the User instance
-        Landlord_Name = request.POST['username']
-        price = request.POST['price']
-        email = request.POST['email']
+        user = request.user
+        Landlord_Name = request.user.first_name
+        email = request.user.email
         mobile = request.POST['mobile']
+        price = request.POST['price']
+        length = request.POST['length']
+        width = request.POST['width']
         address = request.POST['address']
         city = request.POST['city']
         state = request.POST['state']
-        dimensions = request.POST['dimensions']
+        totalArea = request.POST['totalArea']
+        description = request.POST['description']
+        type_of_property = request.POST['type_of_property']
+        Willing_to = request.POST['Willing_to']
+        facing = request.POST['facing']
         mainimage = request.FILES.get('mainimage')
         subimage1 = request.FILES.get('subimage1')
         subimage2 = request.FILES.get('subimage2')
         subimage3 = request.FILES.get('subimage3')
-        type_of_property = request.POST["type_of_property"]
         
         try:
             profile = Profile(
-                user=user,  # Assign the User instance to the user field
+                user=user,
                 Landlord_Name=Landlord_Name,
-                price=price,
                 email=email,
                 mobile=mobile,
+                price=price,
+                length=length,
+                width=width,
                 address=address,
                 city=city,
                 state=state,
-                dimensions=dimensions,
+                totalArea=totalArea,
+                description=description,
+                type_of_property=type_of_property,
+                Willing_to=Willing_to,
+                facing=facing,
                 mainimage=mainimage,
                 subimage1=subimage1,
                 subimage2=subimage2,
-                subimage3=subimage3,
-                type_of_property=type_of_property
+                subimage3=subimage3
             )
-            
-            # Perform model validation
             profile.save()
             
             messages.success(request, 'Profile created successfully.')
@@ -157,3 +204,4 @@ def sell(request):
             return HttpResponse(e)
     
     return render(request, 'jyore/sell.html')
+

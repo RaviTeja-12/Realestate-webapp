@@ -3,5 +3,5 @@ from . import consumers
 
 
 websocket_urlpatterns = [
-    path('inbox', consumers.ChatConsumer.as_asgi()),
+    path('inbox/', consumers.ChatConsumer.as_asgi()),
 ]
