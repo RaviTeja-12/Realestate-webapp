@@ -1,0 +1,39 @@
+version: 2.1
+orbs:
+  python: circleci/python@2
+
+jobs:
+  test-python:
+    docker:
+      - image: cimg/python:3.8-node
+    steps:
+      - checkout
+      - run:
+          name: Install build dependencies
+          command: sudo apt-get install -y build-essential python3-dev
+      - python/install-packages
+      - run:
+          name: Upgrade pip and setuptools
+          command: |
+            python -m pip install --upgrade pip
+            python -m pip install --upgrade setuptools
+      - run:
+          name: Run tests
+          command: python manage.py test
+
+  deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      # Add deploy steps here
+      - run:
+          name: Deploy to production
+          command: ./deploy.sh
+
+workflows:
+  build-and-test:
+    jobs:
+      - test-python
+      - deploy:
+          requires:
+            - test-python
