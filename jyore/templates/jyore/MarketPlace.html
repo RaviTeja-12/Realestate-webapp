@@ -296,7 +296,8 @@
                                                             <p><b>Available for:</b> {{ property.Willing_to }}</p>
                                                         </div>
                                                         <div class="card-buttons" style="text-align: center; margin-top: 10px;">
-                                                            <a href="{% url 'create_thread' property.user.first_name %}" class="btn btn-primary">Chat</a>
+                                                            <!-- <a href="{% url 'create_thread' property.user.first_name %}" class="btn btn-primary">Chat</a> -->
+                                                            <a href="{% url 'viewproperty' property.id %}" class="btn btn-primary"> More Info</a>
                                                             <button class="btn btn-secondary close-overlay">Close</button>
                                                         </div>
                                                     </div>

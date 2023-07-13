@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index,login_page,register,logout_view,marketplace,sell,profile_view,delete_v,verify_otp
+from .views import index,login_page,register,logout_view,marketplace,sell,profile_view,delete_v,verify_otp, viewproperty
 from django.conf.urls.static import static
 from django.conf import settings
 urlpatterns = [
@@ -12,4 +12,5 @@ urlpatterns = [
     path('profile/', profile_view, name='profile'),
     path("delete/<int:id>/",delete_v,name="delete_v"),
     path('verify-otp/<str:username>', verify_otp, name='verify_otp'),
+    path('viewproperty/<int:id>/', viewproperty, name='viewproperty'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
