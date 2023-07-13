@@ -216,3 +216,6 @@ def viewproperty(request, id):
         'profile': profile,
     }
     return render(request, 'jyore/viewproperty.html', context)
+
+def sellfirst(request):
+    return render(request, 'jyore/sellfirst.html')
