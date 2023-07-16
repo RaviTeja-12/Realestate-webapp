@@ -138,44 +138,101 @@ def marketplace(request):
 
 
 
-def sell(request):
+# views.py
+
+
+from django.shortcuts import render, redirect, HttpResponse
+from django.contrib import messages
+from .models import Profile
+
+def housesellerprofile(request):
     if request.method == 'POST':
         user = request.user
         Landlord_Name = request.user.first_name
-        email = request.user.email
-        mobile = request.POST['mobile']
-        price = request.POST['price']
-        length = request.POST['length']
-        width = request.POST['width']
-        address = request.POST['address']
-        city = request.POST['city']
-        state = request.POST['state']
-        totalArea = request.POST['totalArea']
-        description = request.POST['description']
-        type_of_property = request.POST['type_of_property']
-        Willing_to = request.POST['Willing_to']
-        facing = request.POST['facing']
+        email = request.user.username
+        mobile = request.POST.get('mobile')
+        sellprice = request.POST.get('sellprice')
+        rentprice = request.POST.get('rentprice')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        totalArea = request.POST.get('totalArea')
+        description = request.POST.get('description')
+        bedrooms = request.POST.get('bedrooms')
+        bathrooms = request.POST.get('bathrooms')
+        dimensions_of_bedroom = request.POST.get('dimensions_of_bedroom')
+        facing_road_width = request.POST.get('facing_road_width')
+        wardrobe = request.POST.get('wardrobe')
+        fans = request.POST.get('fans')
+        lights = request.POST.get('lights')
+        kitchen = request.POST.get('kitchen')
+        ac = request.POST.get('ac')
+        beds = request.POST.get('beds')
+        chimney = request.POST.get('chimney')
+        private_garden = request.POST.get('private_garden')
+        maintenance_staff = request.POST.get('maintenance_staff')
+        security = request.POST.get('security')
+        drinage = request.POST.get('drinage')
+        swimming_pool = request.POST.get('swimming_pool')
+        gym = request.POST.get('gym')
+        lift = request.POST.get('lift')
+        internet = request.POST.get('internet')
+        water_source = request.POST.get('water_source')
+        gated_community = request.POST.get('gated_community')
+        parking = request.POST.get('parking')
+        flooring = request.POST.get('flooring')
+        age_of_property = request.POST.get('age_of_property')
+        furnished = request.POST.get('furnished')
+        Willing_to = request.POST.get('Willing_to')
+        status = request.POST.get('status')
+        facing = request.POST.get('facing')
         mainimage = request.FILES.get('mainimage')
         subimage1 = request.FILES.get('subimage1')
         subimage2 = request.FILES.get('subimage2')
         subimage3 = request.FILES.get('subimage3')
-        
+
+        # Perform any necessary form validation here before creating the profile
+        # For example, check if required fields are not empty, validate numeric values, etc.
         try:
             profile = Profile(
                 user=user,
                 Landlord_Name=Landlord_Name,
                 email=email,
                 mobile=mobile,
-                price=price,
-                length=length,
-                width=width,
+                sellprice=sellprice,
+                rentprice=rentprice,
                 address=address,
                 city=city,
                 state=state,
                 totalArea=totalArea,
                 description=description,
-                type_of_property=type_of_property,
+                bedrooms=bedrooms,
+                bathrooms=bathrooms,
+                dimensions_of_bedroom=dimensions_of_bedroom,
+                facing_road_width=facing_road_width,
+                wardrobe=wardrobe,
+                fans=fans,
+                lights=lights,
+                kitchen=kitchen,
+                ac=ac,
+                beds=beds,
+                chimney=chimney,
+                private_garden=private_garden,
+                maintenance_staff=maintenance_staff,
+                security=security,
+                drinage=drinage,
+                swimming_pool=swimming_pool,
+                gym=gym,
+                lift=lift,
+                internet=internet,
+                water_source=water_source,
+                gated_community=gated_community,
+                parking=parking,
+                flooring=flooring,
+                age_of_property=age_of_property,
+                furnished=furnished,
                 Willing_to=Willing_to,
+                status=status,
                 facing=facing,
                 mainimage=mainimage,
                 subimage1=subimage1,
@@ -183,13 +240,68 @@ def sell(request):
                 subimage3=subimage3
             )
             profile.save()
-            
             messages.success(request, 'Profile created successfully.')
             return redirect('marketplace')
         except Exception as e:
             return HttpResponse(e)
-    
+            
     return render(request, 'jyore/sell.html')
+
+
+# def housesellerprofile(request):
+#     if request.method == 'POST':
+#         user = request.user
+#         Landlord_Name = request.user.first_name
+#         email = request.user.email
+#         mobile = request.POST['mobile']
+#         price = request.POST['price']
+#         length = request.POST['length']
+#         width = request.POST['width']
+#         address = request.POST['address']
+#         city = request.POST['city']
+#         state = request.POST['state']
+#         totalArea = request.POST['totalArea']
+#         description = request.POST['description']
+#         type_of_property = request.POST['type_of_property']
+#         Willing_to = request.POST['Willing_to']
+#         facing = request.POST['facing']
+#         mainimage = request.FILES.get('mainimage')
+#         subimage1 = request.FILES.get('subimage1')
+#         subimage2 = request.FILES.get('subimage2')
+#         subimage3 = request.FILES.get('subimage3')
+        
+#         try:
+#             profile = Profile(
+#                 user=user,
+#                 Landlord_Name=Landlord_Name,
+#                 email=email,
+#                 mobile=mobile,
+#                 price=price,
+#                 length=length,
+#                 width=width,
+#                 address=address,
+#                 city=city,
+#                 state=state,
+#                 totalArea=totalArea,
+#                 description=description,
+#                 type_of_property=type_of_property,
+#                 Willing_to=Willing_to,
+#                 facing=facing,
+#                 mainimage=mainimage,
+#                 subimage1=subimage1,
+#                 subimage2=subimage2,
+#                 subimage3=subimage3
+#             )
+#             profile.save()
+            
+#             messages.success(request, 'Profile created successfully.')
+#             return redirect('marketplace')
+#         except Exception as e:
+#             return HttpResponse(e)
+    
+#     return render(request, 'jyore/sell.html')
+
+
 
 import string
 import random
@@ -219,3 +331,4 @@ def viewproperty(request, id):
 
 def sellfirst(request):
     return render(request, 'jyore/sellfirst.html')
+

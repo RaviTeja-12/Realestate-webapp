@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Page</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 200'%3E%0A%20%20%3Crect x='10' y='10' width='580' height='180' fill='%23ff7f00' /%3E%0A%20%20%3Cpath d='M10 10h123v123H10z' fill='none' stroke='%23fff' stroke-width='2' /%3E%0A%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: top right;
+            background-size: cover;
+          }
+          
+          
+          
+          
+          
+
+      .container {
+        background-color: #fff;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 50px;
+      }
+
+      .section {
+        display: none;
+      }
+
+      .section.active {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Form Page</h1>
+
+      <nav class="nav nav-pills justify-content-center">
+        <a class="nav-link active" data-toggle="pill" href="#basic-section"
+          >Basic</a
+        >
+        <a class="nav-link" data-toggle="pill" href="#house-details-section"
+          >House Details</a
+        >
+        <a class="nav-link" data-toggle="pill" href="#features-section"
+          >Features & Furnished</a
+        >
+      </nav>
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="basic-section">
+            <!-- Basic Form Section -->
+            <h3>Basic Information</h3>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" />
+            <br />
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" />
+            <br />
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" />
+            <br />
+            <a
+              class="btn btn-primary next-section"
+              href="#house-details-section"
+              >Next <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+          <div class="tab-pane fade" id="house-details-section">
+            <!-- House Details Form Section -->
+            <h3>House Details</h3>
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" />
+            <br />
+            <label for="bedrooms">Number of Bedrooms:</label>
+            <input type="number" id="bedrooms" name="bedrooms" />
+            <br />
+            <label for="bathrooms">Number of Bathrooms:</label>
+            <input type="number" id="bathrooms" name="bathrooms" />
+            <br />
+            <a class="btn btn-primary next-section" href="#features-section"
+              >Next <i class="fas fa-arrow-right"></i
+            ></a>
+            <a class="btn btn-secondary prev-section" href="#basic-section"
+              ><i class="fas fa-arrow-left"></i> Previous</a
+            >
+          </div>
+          <div class="tab-pane fade" id="features-section">
+            <!-- Features & Furnished Form Section -->
+            <h3>Features & Furnished</h3>
+            <label for="garage">Garage:</label>
+            <input type="checkbox" id="garage" name="garage" />
+            <br />
+            <label for="garden">Garden:</label>
+            <input type="checkbox" id="garden" name="garden" />
+            <br />
+            <label for="swimming-pool">Swimming Pool:</label>
+            <input type="checkbox" id="swimming-pool" name="swimming-pool" />
+            <br />
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a
+              class="btn btn-secondary prev-section"
+              href="#house-details-section"
+              ><i class="fas fa-arrow-left"></i> Previous</a
+            >
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $(".nav-link").on("click", function (e) {
+          e.preventDefault();
+          $(this).tab("show");
+        });
+
+        $(".next-section").on("click", function (e) {
+          e.preventDefault();
+          var nextSection = $(this).attr("href");
+          $('.nav-link[href="' + nextSection + '"]').tab("show");
+        });
+
+        $(".prev-section").on("click", function (e) {
+          e.preventDefault();
+          var prevSection = $(this).attr("href");
+          $('.nav-link[href="' + prevSection + '"]').tab("show");
+        });
+      });
+    </script>
+  </body>
+</html>
