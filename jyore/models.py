@@ -33,25 +33,25 @@ class Profile(models.Model):
     Landlord_Name = models.CharField(max_length=20)
     email = models.EmailField()
     mobile = models.IntegerField(blank=True, null=True)
-    sellprice = models.IntegerField(blank=True, null=True, default=0)
-    rentprice = models.IntegerField(blank=True, null=True, default=0)
+    sellprice = models.IntegerField(blank=True, null=True ,default=0)
+    rentprice = models.IntegerField(blank=True, null=True ,default=0)
     address = models.CharField(max_length=200)
     city = models.CharField(max_length=30)
     state = models.CharField(max_length=30, default="Andhra Pradesh")
     totalArea = models.CharField(max_length=50, default="0")
     description = models.TextField(max_length=500, default="none")
-    bedrooms = models.IntegerField(blank=True, null=True, default=0)
-    bathrooms = models.IntegerField(blank=True, null=True, default=0)
+    bedrooms = models.IntegerField(blank=True, null=True)
+    bathrooms = models.IntegerField(blank=True, null=True)
     dimensions_of_bedroom = models.CharField(max_length=50, default="0")
-    facing_road_width = models.IntegerField(blank=True, null=True, default=0)
+    facing_road_width = models.IntegerField(blank=True, null=True)
     wardrobe_choices = (
         ('yes', 'Yes'),
         ('no', 'No'),
     )
     wardrobe = models.CharField(
         max_length=20, choices=wardrobe_choices, default="no")
-    fans = models.IntegerField(blank=True, null=True, default=0)
-    lights = models.IntegerField(blank=True, null=True, default=0)
+    fans = models.IntegerField(blank=True, null=True)
+    lights = models.IntegerField(blank=True, null=True)
     kitchen_choices = (
         ('modular', 'Modular'),
         ('normal', 'Normal'),
@@ -172,6 +172,7 @@ class Profile(models.Model):
         ('yes', 'Yes'),
         ('no', 'No'),
     )
+    internet = models.CharField(max_length=20, choices=internet_choices, default="no")
     water_source_choices = (
         ('borewell', 'Borewell'),
         ('municipal', 'Municipal'),

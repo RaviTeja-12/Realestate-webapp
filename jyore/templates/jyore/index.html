@@ -11,6 +11,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.6/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="{% static 'jyore/css/animate.min.css' %}">
+    <style>
+        
+        .search-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        /* CSS for displaying the selected option from the dropdown */
+        .selected-option {
+            color: #fff;
+            font-weight: bold;
+        } 
+        
+    </style>
 </head>
 
 <body>
@@ -40,6 +55,35 @@
                 <div class="col-md-12 position-relative">
                     <h1 class="display-1 mb-1 text-capitalize" >RealEstate For U</h1>
                     <h3 class="mb-5">Find Your Dream Home</h3>
+                    <div class="input-group justify-content-center align-items-center search-bar">
+                        <form class="d-flex me-2" id="search-form">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <button class="btn btn-outline-primary" type="button" id="fetch-location"><i class="fas fa-map-marker-alt"></i></button>
+                                <input class="form-control" type="search" name="location" id="location-input" placeholder="Location">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Property Type
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" data-value="House">House</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="Land">Land</a></li>
+                                    </ul>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Searching For
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" data-value="Rent">Rent</a></li>
+                                        <li><a class="dropdown-item" href="#" data-value="Sell">Sell</a></li>
+                                    </ul>
+                                </div>
+                                <button class="btn btn-outline-primary" type="submit">Search</button>
+                            </div>
+                        </form>
+                        <div class="selected-option" id="selected-option">Property Type: </div>
+                    </div>
                 </div>
             </div>
         </div>
