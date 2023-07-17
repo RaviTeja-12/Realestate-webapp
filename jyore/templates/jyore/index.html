@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.6/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="{% static 'jyore/css/animate.min.css' %}">
     <style>
-        
         .search-bar {
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
@@ -25,7 +24,20 @@
             font-weight: bold;
         } 
         
+        .dropdown-menu {
+            background-color: #f8f9fa; /* Change this to your desired background color */
+        }
+    
+        /* CSS for the selected option in the dropdown */
+        .dropdown-item.active,
+        .dropdown-item:active {
+            background-color: #007bff; /* Change this to your desired background color for the selected option */
+            color: #fff; /* Change this to your desired text color for the selected option */
+        }
+        
     </style>
+    <meta name="description" content="RealEstate For U - Find Your Dream Home">
+    <meta name="keywords" content="real estate, property, buy property, rent property, sell property">
 </head>
 
 <body>
@@ -33,11 +45,9 @@
         <div class="container"><a class="navbar-brand" href="#">RealEstate For U</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav">    
-                    {% if user.is_authenticated %}
+                    
                         <li class="nav-item"><a class="nav-link" href="{% url 'marketplace'%}">MarketPlace</a></li>
-                    {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'login'%}">MarketPlace</a></li>
-                    {% endif %}
+                    
                 </ul>
             </div>
             {% if user.is_authenticated %}
@@ -56,34 +66,33 @@
                     <h1 class="display-1 mb-1 text-capitalize" >RealEstate For U</h1>
                     <h3 class="mb-5">Find Your Dream Home</h3>
                     <div class="input-group justify-content-center align-items-center search-bar">
-                        <form class="d-flex me-2" id="search-form">
-                            {% csrf_token %}
+                        <form method="GET" action="{% url 'marketplace' %}" id="search-form">
+                            
                             <div class="input-group">
-                                <button class="btn btn-outline-primary" type="button" id="fetch-location"><i class="fas fa-map-marker-alt"></i></button>
-                                <input class="form-control" type="search" name="location" id="location-input" placeholder="Location">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Property Type
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#" data-value="House">House</a></li>
-                                        <li><a class="dropdown-item" href="#" data-value="Land">Land</a></li>
-                                    </ul>
-                                </div>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Searching For
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#" data-value="Rent">Rent</a></li>
-                                        <li><a class="dropdown-item" href="#" data-value="Sell">Sell</a></li>
-                                    </ul>
-                                </div>
-                                <button class="btn btn-outline-primary" type="submit">Search</button>
+                                <button class="btn btn-outline-primary" type="button" id="fetch-location" aria-label="Fetch Location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </button>
+                                <input class="form-control" type="search" name="city" id="location-input" placeholder="Location">
+                
+                                <!-- Property Type Select -->
+                                
+                                <select class="form-select" name="property_type" id="property-type-select">
+                                    <option value="" selected>-- Property Type --</option>
+                                    <option value="House">House</option>
+                                    <option value="Land">Land</option>
+                                </select>
+                        
+                                <!-- Searching For Select -->
+                                <select class="form-select" name="search_for" id="search-for-select">
+                                    <option value="" selected>-- Searching For --</option>
+                                    <option value="Rent">Rent</option>
+                                    <option value="Sell">Sell</option>
+                                </select>
+                        
+                                <button class="btn btn-outline-primary" type="submit">Search</button>                        
                             </div>
                         </form>
-                        <div class="selected-option" id="selected-option">Property Type: </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -165,6 +174,64 @@
         <div class="container"><p class="m-0 text-center text-white small">© 2023 RealEstate For U. All rights reserved.</p></div>
     </footer>
     <script src="{% static 'jyore/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script>
+        function fetchGeolocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+            } else {
+                console.log('Geolocation is not supported by this browser.');
+            }
+        }
+
+        function successCallback(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Fetch geolocation using OpenCage Geocoding API
+            const apiKey = 'f2e638fce0a048758b7609a8a25cfdc2';
+            const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const city = data.results[0].components.city;
+
+                    // Get the location input field
+                    const locationInput = document.getElementById('location-input');
+
+                    // Update the value of the location input field
+                    locationInput.value = city;
+
+                    // Submit the form
+                    
+                })
+                .catch(error => console.log('Error:', error));
+        }
+
+        function errorCallback(error) {
+            console.log('Error occurred while fetching geolocation:', error);
+        }
+
+        // Attach the event listener to the fetch location button
+        document.getElementById('fetch-location').addEventListener('click', fetchGeolocation);
+    </script>
+    <script>
+        function fetchGeolocation() {
+            // ... Your existing geolocation fetching code ...
+    
+            // Set the values of the hidden input fields
+            document.getElementById('hidden-location-input').value = city;
+            document.getElementById('hidden-property-type').value = document.getElementById('property-type-select').value;
+            document.getElementById('hidden-search-for').value = document.getElementById('search-for-select').value;
+    
+            // Submit the form
+            document.getElementById('search-form').submit();
+        }
+    
+        document.getElementById('fetch-location').addEventListener('click', fetchGeolocation);
+    </script>
+    
+    
 </body>
 
 </html>

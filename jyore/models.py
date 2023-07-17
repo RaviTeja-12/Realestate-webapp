@@ -44,6 +44,11 @@ class Profile(models.Model):
     bathrooms = models.IntegerField(blank=True, null=True)
     dimensions_of_bedroom = models.CharField(max_length=50, default="0")
     facing_road_width = models.IntegerField(blank=True, null=True)
+    type_choices = (
+        ('house', 'House'),
+        ('land', 'Land'),
+    )
+    type = models.CharField(max_length=20, choices=type_choices, default="house")
     wardrobe_choices = (
         ('yes', 'Yes'),
         ('no', 'No'),
@@ -238,3 +243,55 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.Landlord_Name
+    
+
+class landProfile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    Landlord_Name = models.CharField(max_length=20)
+    email = models.EmailField()
+    mobile = models.IntegerField(blank=True, null=True)
+    address = models.CharField(max_length=200)
+    city = models.CharField(max_length=30)
+    state = models.CharField(max_length=30, default="Andhra Pradesh")
+    country = models.CharField(max_length=30, default="India")
+    pincode = models.IntegerField(blank=True, null=True)
+    type_choices = (
+        ('land', 'Land'),
+        ('house', 'House'),
+    )
+    type = models.CharField(max_length=20, choices=type_choices, default="land")
+    land_choices = (
+        ('corner', 'Corner'),
+        ('gated community', 'Gated Community'),
+        ('middle of the street', 'Middle of the street'),
+        ('beside highway', 'Beside Highway'),
+    )
+    land_type = models.CharField(
+        max_length=20, choices=land_choices, default="corner")
+    length = models.IntegerField(blank=True, null=True)
+    breadth = models.IntegerField(blank=True, null=True)
+    metric_choices = (
+        ('sq.m', 'Sq.m'),
+        ('cents', 'Cents'),
+        ('sq.ft', 'Sq.ft'),
+        ('sq.yards', 'Sq.yards'),
+        ('acres', 'Acres'),
+        ('hectares', 'Hectares'),
+    )
+    metric = models.CharField(
+        max_length=20, choices=metric_choices, default="sq.ft")
+    price = models.IntegerField(blank=True, null=True)
+    Willing_to_CHOICES = (
+        ('sell', 'Sell'),
+        ('lease', 'Lease'),
+    )
+    Willing_to = models.CharField(
+        max_length=20, choices=Willing_to_CHOICES, default="sell")
+    mainimage = models.ImageField(upload_to='land_images/', null=True, blank=True)
+    subimage1 = models.ImageField(upload_to='land_images/', null=True, blank=True)
+    subimage2 = models.ImageField(upload_to='land_images/', null=True, blank=True)
+    subimage3 = models.ImageField(upload_to='land_images/', null=True, blank=True)
+
+    def __str__(self):
+        return self.Landlord_Name
+    

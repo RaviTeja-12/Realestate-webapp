@@ -101,10 +101,11 @@ def login_page(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
-
+@login_required(login_url='login')
 def marketplace(request): 
     cities = Profile.objects.values_list('city', flat=True).distinct()
     profiles = Profile.objects.all()
+    landprofiles = landProfile.objects.all()
     
     # Apply filters if provided in the request
     city_filter = request.GET.get('city')
@@ -114,24 +115,42 @@ def marketplace(request):
     price_to = request.GET.get('price_to')
     willing_to = request.GET.get('willing_to')
     
-    if city_filter:
-        profiles = profiles.filter(city=city_filter)
-    if type_filter:
-        profiles = profiles.filter(type_of_property=type_filter)
-    if dimensions_filter:
-        profiles = profiles.filter(dimensions__lte=dimensions_filter)
-    if price_from:
-        profiles = profiles.filter(price__gte=price_from)
+    if type_filter == 'land':
+        profiles = landprofiles
+        if city_filter:
+            profiles = profiles.filter(city=city_filter)
+        if type_filter:
+            profiles = profiles.filter(type=type_filter)
+        if dimensions_filter:
+            profiles = profiles.filter(dimensions__lte=dimensions_filter)
+        if price_from:
+            profiles = profiles.filter(price__gte=price_from)
 
-    if price_to:
-        profiles = profiles.filter(price__lte=price_to)
-    
-    if willing_to:
-        profiles = profiles.filter(Willing_to=willing_to)
+        if price_to:
+            profiles = profiles.filter(price__lte=price_to)
+
+        if willing_to:
+            profiles = profiles.filter(Willing_to=willing_to)
+    else:
+        if city_filter:
+            profiles = profiles.filter(city=city_filter)
+        if type_filter:
+            profiles = profiles.filter(type=type_filter)
+        if dimensions_filter:
+            profiles = profiles.filter(dimensions__lte=dimensions_filter)
+        if price_from:
+            profiles = profiles.filter(price__gte=price_from)
+
+        if price_to:
+            profiles = profiles.filter(price__lte=price_to)
+
+        if willing_to:
+            profiles = profiles.filter(Willing_to=willing_to)
     
     context = {
         'cities': cities,
         'profile': profiles,
+        'landprofile': landprofiles,
     }
     
     return render(request, 'jyore/MarketPlace.html', context)
@@ -248,59 +267,6 @@ def housesellerprofile(request):
     return render(request, 'jyore/sell.html')
 
 
-# def housesellerprofile(request):
-#     if request.method == 'POST':
-#         user = request.user
-#         Landlord_Name = request.user.first_name
-#         email = request.user.email
-#         mobile = request.POST['mobile']
-#         price = request.POST['price']
-#         length = request.POST['length']
-#         width = request.POST['width']
-#         address = request.POST['address']
-#         city = request.POST['city']
-#         state = request.POST['state']
-#         totalArea = request.POST['totalArea']
-#         description = request.POST['description']
-#         type_of_property = request.POST['type_of_property']
-#         Willing_to = request.POST['Willing_to']
-#         facing = request.POST['facing']
-#         mainimage = request.FILES.get('mainimage')
-#         subimage1 = request.FILES.get('subimage1')
-#         subimage2 = request.FILES.get('subimage2')
-#         subimage3 = request.FILES.get('subimage3')
-        
-#         try:
-#             profile = Profile(
-#                 user=user,
-#                 Landlord_Name=Landlord_Name,
-#                 email=email,
-#                 mobile=mobile,
-#                 price=price,
-#                 length=length,
-#                 width=width,
-#                 address=address,
-#                 city=city,
-#                 state=state,
-#                 totalArea=totalArea,
-#                 description=description,
-#                 type_of_property=type_of_property,
-#                 Willing_to=Willing_to,
-#                 facing=facing,
-#                 mainimage=mainimage,
-#                 subimage1=subimage1,
-#                 subimage2=subimage2,
-#                 subimage3=subimage3
-#             )
-#             profile.save()
-            
-#             messages.success(request, 'Profile created successfully.')
-#             return redirect('marketplace')
-#         except Exception as e:
-#             return HttpResponse(e)
-    
-#     return render(request, 'jyore/sell.html')
-
 
 
 import string
@@ -332,3 +298,60 @@ def viewproperty(request, id):
 def sellfirst(request):
     return render(request, 'jyore/sellfirst.html')
 
+
+from django.shortcuts import render, redirect
+from .models import landProfile
+
+def landsellerprofile(request):
+    if request.method == 'POST':
+        # Get the form data from the request.POST dictionary
+        user = request.user
+        Landlord_Name = request.user.first_name
+        email = request.user.username
+        mobile = request.POST.get('mobile')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state', 'Andhra Pradesh')  # Default value if state is not provided
+        country = request.POST.get('country', 'India')  # Default value if country is not provided
+        pincode = request.POST.get('pincode')
+        land_type = request.POST.get('land_type', 'corner')  # Default value if land_type is not provided
+        length = request.POST.get('length')
+        breadth = request.POST.get('breadth')
+        metric = request.POST.get('metric', 'sq.ft')  # Default value if metric is not provided
+        price = request.POST.get('price')
+        willing_to = request.POST.get('Willing_to', 'sell')  # Default value if Willing_to is not provided
+        mainimage = request.FILES.get('mainimage')
+        subimage1 = request.FILES.get('subimage1')
+        subimage2 = request.FILES.get('subimage2')
+        subimage3 = request.FILES.get('subimage3')
+
+        # Create a new landProfile object and save it to the database
+        profile = landProfile(
+            user=user,
+            Landlord_Name=Landlord_Name,
+            email=email,
+            mobile=mobile,
+            address=address,
+            city=city,
+            state=state,
+            country=country,
+            pincode=pincode,
+            land_type=land_type,
+            length=length,
+            breadth=breadth,
+            metric=metric,
+            price=price,
+            Willing_to=willing_to,
+            mainimage=mainimage,
+            subimage1=subimage1,
+            subimage2=subimage2,
+            subimage3=subimage3
+        )
+        
+        # Assuming you are using User authentication, set the user for the profile
+        profile.user = request.user
+        profile.save()
+        messages.success(request, 'Profile created successfully.')
+        return redirect('marketplace')
+        # Redirect to the detail page of the newly created profile
+    return render(request, 'jyore/landsell.html')
