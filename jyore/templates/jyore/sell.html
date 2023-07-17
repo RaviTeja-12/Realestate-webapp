@@ -184,11 +184,11 @@
                   <!-- Dynamic Price Field based on Willing_to -->
                   <div class="mb-3" id="sellPriceField">
                     <label for="sellprice" class="form-label">Sell Price</label>
-                    <input type="number" class="form-control" id="sellprice" name="sellprice" required>
+                    <input type="number" class="form-control" id="sellprice" name="sellprice">
                   </div>
                   <div class="mb-3" id="rentPriceField" style="display: none;">
                     <label for="rentprice" class="form-label">Rent Price</label>
-                    <input type="number" class="form-control" id="rentprice" name="rentprice" required>
+                    <input type="number" class="form-control" id="rentprice" name="rentprice">
                   </div>
                 </div>
               </div>
@@ -211,7 +211,7 @@
                     <div class="mb-3">
                       <label for="wardrobe" class="form-label">Wardrobe</label>
                       <select class="form-control" id="wardrobe" name="wardrobe">
-                        <option value="yes">Yes</option>
+                        <option value="yes" selected>Yes</option>
                         <option value="no">No</option>
                       </select>
                     </div>
@@ -227,14 +227,91 @@
                     <div class="mb-3">
                       <label for="kitchen" class="form-label">Kitchen</label>
                       <select class="form-control" id="kitchen" name="kitchen">
-                        <option value="modular">Modular</option>
+                        <option value="modular" selected>Modular</option>
                         <option value="normal">Normal</option>
                       </select>
                     </div>
                     <div class="mb-3">
                       <label for="ac" class="form-label">Air Conditioning (AC)</label>
                       <select class="form-control" id="ac" name="ac">
-                        <option value="yes">Yes</option>
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Dining Table</label>
+                      <select class="form-control" id="ac" name="dining_table">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Exhaust Fan</label>
+                      <select class="form-control" id="ac" name="exhaust_fan">
+                        <option value="yes"selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Fridge</label>
+                      <select class="form-control" id="ac" name="fridge">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Internet</label>
+                      <select class="form-control" id="ac" name="internet">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Geysers</label>
+                      <select class="form-control" id="ac" name="geysers">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Microwave</label>
+                      <select class="form-control" id="ac" name="microwave">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Sofa</label>
+                      <select class="form-control" id="ac" name="sofa">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Tv</label>
+                      <select class="form-control" id="ac" name="tv">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Washing machine</label>
+                      <select class="form-control" id="ac" name="washing_machine">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Water Purifier</label>
+                      <select class="form-control" id="ac" name="water_purifier">
+                        <option value="yes" selected>Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="ac" class="form-label">Vasthu</label>
+                      <select class="form-control" id="ac" name="vasthu">
+                        <option value="yes" selected>Yes</option>
                         <option value="no">No</option>
                       </select>
                     </div>
@@ -247,7 +324,7 @@
                       <div class="mb-3">
                         <label for="chimney" class="form-label">Chimney</label>
                         <select class="form-control" id="chimney" name="chimney">
-                          <option value="yes">Yes</option>
+                          <option value="yes" selected>Yes</option>
                           <option value="no">No</option>
                         </select>
                       </div>
@@ -267,28 +344,28 @@
                   <div class="mb-3">
                     <label for="private_garden" class="form-label">Private Garden</label>
                     <select class="form-control" id="private_garden" name="private_garden">
-                      <option value="yes">Yes</option>
+                      <option value="yes" selected>Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
                   <div class="mb-3">
                     <label for="maintenance_staff" class="form-label">Maintenance Staff</label>
                     <select class="form-control" id="maintenance_staff" name="maintenance_staff">
-                      <option value="yes">Yes</option>
+                      <option value="yes" selected>Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
                   <div class="mb-3">
                     <label for="security" class="form-label">Security</label>
                     <select class="form-control" id="security" name="security">
-                      <option value="yes">Yes</option>
+                      <option value="yes" selected>Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
                   <div class="mb-3">
                     <label for="drinage" class="form-label">Drainage</label>
                     <select class="form-control" id="drinage" name="drinage">
-                      <option value="yes">Yes</option>
+                      <option value="yes" selected>Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
@@ -297,28 +374,28 @@
                   <div class="mb-3">
                     <label for="swimming_pool" class="form-label">Swimming Pool</label>
                     <select class="form-control" id="swimming_pool" name="swimming_pool">
-                      <option value="yes">Yes</option>
+                      <option value="yes" selected>Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
                   <div class="mb-3">
                     <label for="gym" class="form-label">Gym</label>
                     <select class="form-control" id="gym" name="gym">
-                      <option value="yes">Yes</option>
+                      <option value="yes" selected>Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
                   <div class="mb-3">
                     <label for="lift" class="form-label">Lift</label>
                     <select class="form-control" id="lift" name="lift">
-                      <option value="yes">Yes</option>
+                      <option value="yes" selected>Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
                   <div class="mb-3">
                     <label for="internet" class="form-label">Internet</label>
                     <select class="form-control" id="internet" name="internet">
-                      <option value="yes">Yes</option>
+                      <option value="yes" selected>Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
@@ -364,7 +441,7 @@
                   <div class="mb-3">
                     <label for="gated_community" class="form-label">Gated Community</label>
                     <select class="form-control" id="gated_community" name="gated_community">
-                      <option value="yes">Yes</option>
+                      <option value="yes" selected>Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
@@ -374,7 +451,7 @@
                   <div class="mb-3">
                     <label for="parking" class="form-label">Parking</label>
                     <select class="form-control" id="parking" name="parking">
-                      <option value="yes">Yes</option>
+                      <option value="yes" selected>Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>

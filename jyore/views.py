@@ -16,15 +16,30 @@ def index(request):
 
 def profile_view(request):
     username = request.user
-    history = Profile.objects.filter(user = username)  # Replace with your actual history data
+    houseprofile = Profile.objects.filter(user = username)  # Replace with your actual history data
+    landprofile = landProfile.objects.filter(user = username)
+    history = list(chain(houseprofile, landprofile))
     context = {'history': history, 'username': username}
     return render(request, 'jyore/profile.html', context)
 
-def delete_v(request,id):
-    print(id)
+from django.shortcuts import get_object_or_404, redirect
+from .models import Profile, landProfile
+
+def delete_v(request, id):
+    # Try to get the profile from the Profile model based on the provided 'id'
+    
     user = Profile.objects.get(pk=id)
     user.delete()
     return redirect('profile')
+
+def delete_land(request, id):
+    # Try to get the profile from the Profile model based on the provided 'id'
+
+    user = landProfile.objects.get(pk=id)
+    user.delete()
+    return redirect('profile')
+
+    
 
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -101,10 +116,18 @@ def login_page(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+from itertools import chain
 @login_required(login_url='login')
 def marketplace(request): 
-    cities = Profile.objects.values_list('city', flat=True).distinct()
-    profiles = Profile.objects.all()
+    profile_cities = Profile.objects.values_list('city', flat=True).distinct()
+
+# Retrieve cities from LandProfile model
+    landprofile_cities = landProfile.objects.values_list('city', flat=True).distinct()
+
+# Combine the two lists using chain()
+    cities = list(chain(profile_cities, landprofile_cities))
+    houseprofiles = Profile.objects.all()
     landprofiles = landProfile.objects.all()
     
     # Apply filters if provided in the request
@@ -116,40 +139,36 @@ def marketplace(request):
     willing_to = request.GET.get('willing_to')
     
     if type_filter == 'land':
-        profiles = landprofiles
+        houseprofiles=None
         if city_filter:
-            profiles = profiles.filter(city=city_filter)
+            landprofiles = landprofiles.filter(city=city_filter)
         if type_filter:
-            profiles = profiles.filter(type=type_filter)
+            landprofiles = landprofiles.filter(type=type_filter)
         if dimensions_filter:
-            profiles = profiles.filter(dimensions__lte=dimensions_filter)
+            landprofiles = landprofiles.filter(dimensions__lte=dimensions_filter)
         if price_from:
-            profiles = profiles.filter(price__gte=price_from)
-
+            landprofiles = landprofiles.filter(price__gte=price_from)
         if price_to:
-            profiles = profiles.filter(price__lte=price_to)
-
+            landprofiles = landprofiles.filter(price__lte=price_to)
         if willing_to:
-            profiles = profiles.filter(Willing_to=willing_to)
-    else:
+            landprofiles = landprofiles.filter(Willing_to=willing_to)
+    elif type_filter == 'house':
+        landprofiles=None
         if city_filter:
-            profiles = profiles.filter(city=city_filter)
+            houseprofiles = houseprofiles.filter(city=city_filter)
         if type_filter:
-            profiles = profiles.filter(type=type_filter)
+            houseprofiles = houseprofiles.filter(type=type_filter)
         if dimensions_filter:
-            profiles = profiles.filter(dimensions__lte=dimensions_filter)
+            houseprofiles = houseprofiles.filter(dimensions__lte=dimensions_filter)
         if price_from:
-            profiles = profiles.filter(price__gte=price_from)
-
+            houseprofiles = houseprofiles.filter(price__gte=price_from)
         if price_to:
-            profiles = profiles.filter(price__lte=price_to)
-
+            houseprofiles = houseprofiles.filter(price__lte=price_to)
         if willing_to:
-            profiles = profiles.filter(Willing_to=willing_to)
-    
+            houseprofiles = houseprofiles.filter(Willing_to=willing_to) 
     context = {
         'cities': cities,
-        'profile': profiles,
+        'profile': houseprofiles,
         'landprofile': landprofiles,
     }
     
@@ -169,47 +188,50 @@ def housesellerprofile(request):
         user = request.user
         Landlord_Name = request.user.first_name
         email = request.user.username
-        mobile = request.POST['mobile']
-        sellprice = request.POST['sellprice']
-        rentprice = request.POST['rentprice']
-        address = request.POST['address']
-        city = request.POST['city']
-        state = request.POST['state']
-        totalArea = request.POST['totalArea']
-        description = request.POST['description']
-        bedrooms = request.POST['bedrooms']
-        bathrooms = request.POST['bathrooms']
-        dimensions_of_bedroom = request.POST['dimensions_of_bedroom']
-        facing_road_width = request.POST['facing_road_width']
-        wardrobe = request.POST['wardrobe']
-        fans = request.POST['fans']
-        lights = request.POST['lights']
-        kitchen = request.POST['kitchen']
-        ac = request.POST['ac']
-        beds = request.POST['beds']
-        chimney = request.POST['chimney']
-        private_garden = request.POST['private_garden']
-        maintenance_staff = request.POST['maintenance_staff']
-        security = request.POST['security']
-        drinage = request.POST['drinage']
-        swimming_pool = request.POST['swimming_pool']
-        gym = request.POST['gym']
-        lift = request.POST['lift']
-        internet = request.POST['internet']
-        water_source = request.POST['water_source']
-        gated_community = request.POST['gated_community']
-        parking = request.POST['parking']
-        flooring = request.POST['flooring']
-        age_of_property = request.POST['age_of_property']
-        furnished = request.POST['furnished']
-        Willing_to = request.POST['Willing_to']
-        status = request.POST['status']
-        facing = request.POST['facing']
+        mobile = request.POST.get('mobile')
+        sellprice = request.POST.get('sellprice')
+        rentprice = request.POST.get('rentprice')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        totalArea = request.POST.get('totalArea')
+        description = request.POST.get('description')
+        bedrooms = request.POST.get('bedrooms')
+        bathrooms = request.POST.get('bathrooms')
+        dimensions_of_bedroom = request.POST.get('dimensions_of_bedroom')
+        facing_road_width = request.POST.get('facing_road_width')
+        wardrobe = request.POST.get('wardrobe')
+        fans = request.POST.get('fans')
+        lights = request.POST.get('lights')
+        kitchen = request.POST.get('kitchen')
+        ac = request.POST.get('ac')
+        beds = request.POST.get('beds')
+        chimney = request.POST.get('chimney')
+        private_garden = request.POST.get('private_garden')
+        maintenance_staff = request.POST.get('maintenance_staff')
+        security = request.POST.get('security')
+        drinage = request.POST.get('drinage')
+        swimming_pool = request.POST.get('swimming_pool')
+        gym = request.POST.get('gym')
+        lift = request.POST.get('lift')
+        internet = request.POST.get('internet')
+        water_source = request.POST.get('water_source')
+        gated_community = request.POST.get('gated_community')
+        parking = request.POST.get('parking')
+        flooring = request.POST.get('flooring')
+        age_of_property = request.POST.get('age_of_property')
+        furnished = request.POST.get('furnished')
+        Willing_to = request.POST.get('Willing_to')
+        status = request.POST.get('status')
+        facing = request.POST.get('facing')
         mainimage = request.FILES.get('mainimage')
         subimage1 = request.FILES.get('subimage1')
         subimage2 = request.FILES.get('subimage2')
         subimage3 = request.FILES.get('subimage3')
-
+        if Willing_to == 'sell':
+            rentprice = 0
+        elif Willing_to == 'rent':
+            sellprice = 0
         # Perform any necessary form validation here before creating the profile
         # For example, check if required fields are not empty, validate numeric values, etc.
         try:
@@ -355,3 +377,11 @@ def landsellerprofile(request):
         return redirect('marketplace')
         # Redirect to the detail page of the newly created profile
     return render(request, 'jyore/landsell.html')
+
+
+def landviewproperty(request, id):
+    profile = landProfile.objects.get(id=id)
+    context = {
+        'profile': profile,
+    }
+    return render(request, 'jyore/landviewproperty.html', context)

@@ -70,7 +70,11 @@ style="background: rgba(255, 249, 249, 0.48);border-bottom-width: 1px;border-bot
                                             <p class="card-text">Price: {{ item.price }}</p>
                                             <p class="card-text">User: {{ item.user }}</p>
                                             <p class="card-text">Mobile: {{ item.mobile }}</p>
+                                            {% if item.type == 'house' %}
                                             <a href="{% url 'delete_v' item.id %}"><button class="btn btn-primary">Delete</button></a>
+                                            {% else %}
+                                            <a href="{% url 'delete_land' item.id %}"><button class="btn btn-primary">Delete</button></a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

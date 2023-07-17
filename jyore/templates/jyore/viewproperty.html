@@ -8,8 +8,8 @@
   <title>Property Details</title>
   <link rel="stylesheet" href="{% static 'jyore/bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
-  <link rel="stylesheet" href="{% static 'jyore/fonts/font-awesome.min.css' %}">
-  <link rel="stylesheet" href="{% static 'jyore/fonts/simple-line-icons.min.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.6/css/simple-line-icons.min.css">
   <link rel="stylesheet" href="{% static 'jyore/css/animate.min.css' %}">
   <style>
     body {
@@ -129,29 +129,165 @@
 
     <div class="row">
       <div class="col-lg-6">
-        <h4 class="price">Price: ₹{{profile.price}}</h4>
-      </div>
+        <h4 class="price">Landlord Name : {{profile.Landlord_Name}}</h4>
+        <h4 class="price">Mobile : {{profile.mobile}}</h4>
+      </div>   
       <div class="col-lg-6 text-right">
         <!-- Add your buttons here -->
+        <h4 class="price">Price: ₹{{profile.sellprice}}</h4>
+        <a href="{% url 'create_thread' profile.user.first_name %}" class="btn btn-primary">Chat</a>
       </div>
     </div>
 
     <div class="row property-details">
       <div class="col-lg-4">
-        <h5><i class="bi bi-rulers"></i> Floor Plan</h5>
-        <p>Open floor plan</p>
+        <h5><i class="fas fa-map-marker-alt text-danger"></i> Address</h5>
+        <p>{{ profile.address }}, {{ profile.city }}, {{ profile.state }}</p>
       </div>
       <div class="col-lg-4">
-        <h5><i class="bi bi-bath"></i> Bathrooms</h5>
-        <p>3</p>
+        <h5><i class="fas fa-home text-primary"></i> Total Area:</h5>
+        <p>{{ profile.totalArea }}</p>
       </div>
       <div class="col-lg-4">
-        <h5><i class="bi bi-house"></i> Bedrooms</h5>
-        <p>4</p>
+        <h5><i class="fas fa-compass text-success"></i> Facing</h5>
+        <p>{{ profile.facing }}</p>
       </div>
       <div class="col-lg-4">
-        <h5><i class="bi bi-building"></i> Floors</h5>
-        <p>2</p>
+        <h5><i class="fas fa-bed text-info"></i> Bedrooms</h5>
+        <p>{{ profile.bedrooms }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-bath text-warning"></i> Bathrooms</h5>
+        <p>{{ profile.bathrooms }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-ruler text-danger"></i> Dimensions of Bedroom</h5>
+        <p>{{ profile.dimensions_of_bedroom }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-road text-primary"></i> Facing Road Width</h5>
+        <p>{{ profile.facing_road_width }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-warehouse text-success"></i> Wardrobe</h5>
+        <p>{{ profile.wardrobe }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-fan text-info"></i> Fans</h5>
+        <p>{{ profile.fans }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-lightbulb text-warning"></i> Lights</h5>
+        <p>{{ profile.lights }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-utensils text-danger"></i> Kitchen</h5>
+        <p>{{ profile.kitchen }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-wind text-primary"></i> Air Conditioner</h5>
+        <p>{{ profile.ac }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-bed text-success"></i> Beds</h5>
+        <p>{{ profile.beds }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-fire text-info"></i> Chimney</h5>
+        <p>{{ profile.chimney }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-chair text-warning"></i> Dining Table</h5>
+        <p>{{ profile.dining_table }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-fan text-danger"></i> Exhaust Fan</h5>
+        <p>{{ profile.exhaust_fan }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-snowflake text-primary"></i> Fridge</h5>
+        <p>{{ profile.fridge }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-thermometer-half text-success"></i> Geysers</h5>
+        <p>{{ profile.geysers }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-microwave text-info"></i> Microwave</h5>
+        <p>{{ profile.microwave }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-couch text-warning"></i> Sofa</h5>
+        <p>{{ profile.sofa }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-washer text-danger"></i> Washing Machine</h5>
+        <p>{{ profile.washing_machine }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-tv text-primary"></i> TV</h5>
+        <p>{{ profile.tv }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-church text-success"></i> Vastu</h5>
+        <p>{{ profile.vasthu }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-tree text-info"></i> Private Garden</h5>
+        <p>{{ profile.private_garden }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-wrench text-warning"></i> Maintenance Staff</h5>
+        <p>{{ profile.maintenance_staff }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-shield-alt text-danger"></i> Security</h5>
+        <p>{{ profile.security }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-sewer text-primary"></i> Drinage</h5>
+        <p>{{ profile.drinage }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-swimming-pool text-success"></i> Swimming Pool</h5>
+        <p>{{ profile.swimming_pool }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-dumbbell text-info"></i> Gym</h5>
+        <p>{{ profile.gym }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-level-up-alt text-warning"></i> Lift</h5>
+        <p>{{ profile.lift }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-wifi text-danger"></i> Internet</h5>
+        <p>{{ profile.internet }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-tint text-primary"></i> Water Source</h5>
+        <p>{{ profile.water_source }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-home text-success"></i> Gated Community</h5>
+        <p>{{ profile.gated_community }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-parking text-info"></i> Parking</h5>
+        <p>{{ profile.parking }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-layer-group text-warning"></i> Flooring</h5>
+        <p>{{ profile.flooring }}</p>
+      </div>
+      <div class="col-lg-4">
+        <h5><i class="fas fa-couch text-danger"></i> Furnished</h5>
+        <p>{{ profile.furnished }}</p>
+      </div>
+      <!-- Add other property details with colorful icons here -->
+    </div>
+    
+    
       </div>
       <!-- Add more details sections as needed -->
     </div>

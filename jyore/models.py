@@ -293,5 +293,5 @@ class landProfile(models.Model):
     subimage3 = models.ImageField(upload_to='land_images/', null=True, blank=True)
 
     def __str__(self):
-        return self.Landlord_Name
+        return self.Landlord_Name,self.pk
     
